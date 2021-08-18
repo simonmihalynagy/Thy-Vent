@@ -42,7 +42,7 @@ router.post("/login", (req, res) => {
     const hash = userFromDb.passwordHash;
     const verifyPassword = bcryptjs.compareSync(password, hash);
     //console.log(verifyPassword);
-    if ((verifyPassword, hash)) {
+    if (verifyPassword) {
       req.session.currentUser = email;
       res.send('worked!')
     }
