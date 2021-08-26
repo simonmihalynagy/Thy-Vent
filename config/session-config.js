@@ -9,7 +9,8 @@ const mongoose = require("mongoose");
 module.exports = (app) => {
   app.use(
     session({
-      secret: "whatever",
+      //secret: "whatever",
+      secret: process.env.SESS_SECRET,
       resave: false,
       saveUninitialized: true,
       cookie: { maxAge: 60000 },
