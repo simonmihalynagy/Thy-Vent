@@ -5,6 +5,7 @@ const User = require("../models/User.model");
 const bcryptjs = require("bcryptjs");
 const saltRounds = 10;
 const Event = require("../models/Event.model");
+const ObjectId = require("mongodb").ObjectId;
 
 var router = express.Router();
 /* GET users listing. */
@@ -33,6 +34,7 @@ router.get("/create-event", (req, res) => {
 router.post("/create-event", (req, res) => {
   const { title, startDate, description, duration, location } = req.body;
   const admin = [req.session.currentUser];
+  console.log(admin);
   Event.create({
     title,
     startDate,
@@ -41,7 +43,7 @@ router.post("/create-event", (req, res) => {
     location,
     admin,
   }).then((event) => {
-    console.log(event);
+    res.redirect(`/users/${admin}`);
   });
 });
 
@@ -82,13 +84,13 @@ router.post("/login", (req, res) => {
 
 router.get("/:id", (req, res) => {
   const id = req.params.id;
-  const eventPromise = Event.find({ admin: id });
+  const eventPromise = Event.find({
+    admin: { $in: [ObjectId("612546d31f263e1aa2fc8b27")] },
+  });
   const userPromise = User.findById(id);
-  Promise.all([eventPromise, userPromise]).then((events, user) => {
-    if (user._id === req.session.currentUser) {
-      //res.render("landing-page", { user: user, events: events });
-      res.send({ user: user, events: events });
-    }
+  Promise.all([eventPromise, userPromise]).then((result) => {
+    res.render("landing-page", { resObj: result });
+    // res.send({ resObj: result });
   });
 });
 
