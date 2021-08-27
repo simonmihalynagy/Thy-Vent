@@ -51,3 +51,21 @@
     </div>
   </div>
 </nav>
+
+<h1>Welcome, {{user.email}} !</h1>
+
+<h3>your events:</h3>
+
+{{#each events}}
+  admin:
+  {{this.admin}}
+  <br />
+  title:
+  {{this.title}}
+
+  <br />
+  location:
+  {{this.location}}
+  <br />
+  <br />
+{{/each}}

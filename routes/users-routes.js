@@ -85,12 +85,15 @@ router.post("/login", (req, res) => {
 router.get("/:id", (req, res) => {
   const id = req.params.id;
   const eventPromise = Event.find({
-    admin: { $in: [ObjectId("612546d31f263e1aa2fc8b27")] },
+    admin: { $in: [ObjectId(id)] },
   });
   const userPromise = User.findById(id);
   Promise.all([eventPromise, userPromise]).then((result) => {
-    res.render("landing-page", { resObj: result });
-    // res.send({ resObj: result });
+    res.render("landing-page", {
+      events: result[0],
+      user: result[1],
+    });
+    //res.send({ events: result[0] });
   });
 });
 
