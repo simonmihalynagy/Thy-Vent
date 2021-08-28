@@ -7,6 +7,7 @@ const eventSchema = new Schema({
     required: true,
     unique: true,
   },
+  public: { type: Boolean, default: true },
   startDate: { type: Date, required: true },
   description: String,
   duration: Number,
@@ -19,6 +20,7 @@ const eventSchema = new Schema({
     streetNumber: { type: Number, default: 0 },
     postalCode: { type: String, lenght: 5, default: "" },
     country: { type: String, default: "" },
+    city: { type: String, default: "" },
   },
 });
 
