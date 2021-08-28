@@ -52,7 +52,7 @@
   </div>
 </nav>
 
-<h1>Welcome, {{user.email}} !</h1>
+<h1>Welcome, {{user.firstName}} !</h1>
 
 <h3>your events:</h3>
 
@@ -62,10 +62,7 @@
   <br />
   title:
   {{this.title}}
-
   <br />
-  location:
-  {{this.location}}
-  <br />
+  {{this.description}}
   <br />
 {{/each}}
