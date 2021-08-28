@@ -1,0 +1,15 @@
+<h1>Dear {{user.firstName}}, here are your events:</h1>
+<br />
+<h4>To edit your events, click edit below the event</h4>
+
+{{#each events}}
+  admin:
+  {{this.admin}}
+  <br />
+  title:
+  {{this.title}}
+  <br />
+  {{this.description}}
+  <br />
+  <a href="/events/{{this.id}}/edit"><button type="submit">Edit this event</button></a>
+{{/each}}

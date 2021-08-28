@@ -25,12 +25,12 @@
           <a class="nav-link" href=""></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/users/my-events">My events</a>
+          <a class="nav-link" href="/users/{{user.id}}/my-events">My events</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="/users/create-event">Create an event</a>
         </li>
-        {{! <li class="nav-item dropdown">
+        <li class="nav-item dropdown">
           <a
             class="nav-link dropdown-toggle"
             href="#"
@@ -46,7 +46,7 @@
             <li><a class="dropdown-item" href="#">Another action</a></li>
             <li><a class="dropdown-item" href="#">Something else here</a></li>
           </ul>
-        </li> }}
+        </li>
       </ul>
     </div>
   </div>
@@ -54,7 +54,7 @@
 
 <h1>Welcome, {{user.firstName}} !</h1>
 
-<h3>your events:</h3>
+{{!-- <h3>your events:</h3>
 
 {{#each events}}
   admin:
@@ -65,4 +65,4 @@
   <br />
   {{this.description}}
   <br />
-{{/each}}
+{{/each}} --}}
