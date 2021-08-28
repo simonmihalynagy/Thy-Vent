@@ -1,30 +1,27 @@
-const { Schema, model } = require('mongoose');
+const { Schema, model } = require("mongoose");
 
 // TODO: Please make sure you edit the user model to whatever makes sense in this case
 const eventSchema = new Schema({
-  admin: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-  guests: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-  
+  title: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  startDate: { type: Date, required: true },
+  description: String,
+  duration: Number,
 
-  //   username: {
-  //     type: String,
-  //     unique: true,
-  //     required: [true, 'Username is required.'],
-  //   },
-  //   passwordHash: {
-  //     type: String,
-  //     required: [true, 'Password is required!'],
-  //   },
-  //   email: {
-  //     type: String,
-  //     match: [/^\S+@\S+\.\S+$/, 'Please use a valid email address.'],
-  //     required: [true, 'Email is required.'],
-  //     unique: true,
-  //     lowercase: true,
-  //     trim: true,
-  //   },
+  admin: [{ type: Schema.Types.ObjectId, ref: "User" }],
+  guests: [{ type: Schema.Types.ObjectId, ref: "User" }],
+  address: {
+    addressName: { type: String, default: "" },
+    streetName: { type: String, default: "" },
+    streetNumber: { type: Number, default: 0 },
+    postalCode: { type: String, lenght: 5, default: "" },
+    country: { type: String, default: "" },
+  },
 });
 
-const Event = model('Event', eventSchema);
+const Event = model("Event", eventSchema);
 
 module.exports = Event;
