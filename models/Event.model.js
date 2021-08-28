@@ -10,10 +10,16 @@ const eventSchema = new Schema({
   startDate: { type: Date, required: true },
   description: String,
   duration: Number,
-  location: String,
 
   admin: [{ type: Schema.Types.ObjectId, ref: "User" }],
   guests: [{ type: Schema.Types.ObjectId, ref: "User" }],
+  address: {
+    addressName: { type: String, default: "" },
+    streetName: { type: String, default: "" },
+    streetNumber: { type: Number, default: 0 },
+    postalCode: { type: String, lenght: 5, default: "" },
+    country: { type: String, default: "" },
+  },
 });
 
 const Event = model("Event", eventSchema);

@@ -1,6 +1,5 @@
 const { Schema, model } = require("mongoose");
 
-// TODO: Please make sure you edit the user model to whatever makes sense in this case
 const userSchema = new Schema({
   passwordHash: {
     type: String,
@@ -15,7 +14,14 @@ const userSchema = new Schema({
     trim: true,
   },
   firstName: { type: String, default: "" },
-  lastName: String,
+  lastName: { type: String, default: "" },
+  address: {
+    addressName: { type: String, default: ""},
+    streetName: { type: String, default: "" },
+    streetNumber: { type: Number, default: 0 },
+    postalCode: { type: String, lenght: 5, default: "" },
+    country: { type: String, default: "" },
+  },
 });
 
 const User = model("User", userSchema);

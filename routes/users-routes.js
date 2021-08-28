@@ -43,6 +43,7 @@ router.post("/create-event", (req, res) => {
     location,
     admin,
   }).then((event) => {
+    console.log("created the following event: " + event);
     res.redirect(`/users/${admin}`);
   });
 });
@@ -93,23 +94,22 @@ router.get("/:id", (req, res) => {
       events: result[0],
       user: result[1],
     });
-    //res.send({ events: result[0] });
+    //res.send({ events: result });
   });
 });
 
 //* GET ACCOUNT
 
-router.get("/account", async (req, res) => {
-  console.log(req.session.currentUser);
-
-  const emailInSession = req.session.currentUser;
-  console.log(emailInSession);
-  const user = await User.findOne({ email: emailInSession });
-
-  if (emailInSession) {
-    res.render("account", { user: user });
-    //res.send({ user: user });
-  }
+router.get("/:id/account", (req, res) => {
+  const userId = req.session.currentUser;
+  User.findById(userId).then((userFromDb) => {
+    if (userId) {
+      res.render("account", { user: userFromDb });
+      //res.send({ user: userFromDb });
+    } else {
+      res.redirect("/");
+    }
+  });
 });
 
 //* UPDATE PROFILE/ACCOUNT
@@ -119,14 +119,27 @@ router.post("/:id/account", (req, res) => {
   //*should i update the model?
   const userId = req.params.id;
   console.log("this is the userID: " + userId);
-  const { firstName, lastName } = req.body;
+  const {
+    firstName,
+    lastName,
+    addressName,
+    streetName,
+    streetNumber,
+    postalCode,
+    country,
+  } = req.body;
 
   //* TODO: can i add property to User model??
   User.findById(userId).then((user) => {
     user.firstName = firstName;
     user.lastName = lastName;
+    user.address.addressName = addressName;
+    user.address.streetName = streetName;
+    user.address.streetNumber = streetNumber;
+    user.address.postalCode = postalCode;
+    user.address.country = country;
     user.save().then(() => {
-      console.log("user updated is: " + user);
+      res.redirect(`/users/${userId}/account`);
     });
   });
 });

@@ -1,7 +1,66 @@
 <h1>This is your user account</h1>
 <form action="/users/{{user.id}}/account" method="post">
-  <input type="text" name="email" id="email" placeholder="{{user.email}}" />
-  <input type="text" name="firstName" id="firstName" placeholder="firstName" />
-  <input type="text" name="lastName" id="lastName" placeholder="lastName" />
+  {{!-- <input type="text" name="email" id="email" placeholder="{{user.email}}" />  --}}
+  <input
+    type="text"
+    name="firstName"
+    id="firstName"
+    placeholder="{{user.firstName}}"
+    value="{{user.firstName}}"
+  />
+  <input
+    type="text"
+    name="lastName"
+    id="lastName"
+    placeholder="{{user.lastName}}"
+    value="{{user.lastName}}"
+  />
+
+  <br />
+  <h3>Put in your address, please!</h3>
+  <label for="addressName">Address name</label>
+  <input
+    type="text"
+    name="addressName"
+    id="addressName"
+    placeholder="{{user.address.addressName}}"
+    value="{{user.address.addressName}}"
+  />
+  <label for="streetName">Street name</label>
+
+  <input
+    type="text"
+    name="streetName"
+    id="streetName"
+    placeholder="{{user.address.streetName}}"
+    value="{{user.address.streetName}}"
+  />
+  <label for="streetNumber">Street numer</label>
+
+  <input
+    type="text"
+    name="streetNumber"
+    id="streetNumber"
+    placeholder="{{user.address.streetNumber}}"
+    value="{{user.address.streetNumber}}"
+  />
+  <label for="postalCode">Postal code</label>
+
+  <input
+    type="text"
+    name="postalCode"
+    id="postalCode"
+    placeholder="{{user.address.postalCode}}"
+    value="{{user.address.postalCode}}"
+  />
+  <label for="country">Country</label>
+
+  <input
+    type="text"
+    name="country"
+    id="country"
+    placeholder="{{user.address.country}}"
+    value="{{user.address.country}}"
+  />
   <button type="submit">Save Settings</button>
 </form>

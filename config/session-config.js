@@ -13,13 +13,13 @@ module.exports = (app) => {
       secret: process.env.SESS_SECRET,
       resave: false,
       saveUninitialized: true,
-      cookie: { maxAge: 60000 },
+      cookie: { maxAge: 6000000 },
       store: MongoStore.create({
         // <== ADDED !!!
         mongoUrl:
           process.env.MONGODB_URI || "mongodb://localhost/event-project",
         // ttl => time to live
-        ttl: 10, // 60sec * 60min * 24h => 1 day
+        // ttl: 10, // 60sec * 60min * 24h => 1 day
       }),
     })
   );
