@@ -6,6 +6,7 @@ const bcryptjs = require("bcryptjs");
 const saltRounds = 10;
 const Event = require("../models/Event.model");
 const ObjectId = require("mongodb").ObjectId;
+const { session } = require("passport");
 
 var router = express.Router();
 /* GET users listing. */
@@ -48,6 +49,31 @@ router.post("/create-event", (req, res) => {
   });
 });
 
+//* GET MY EVENTS
+
+router.get("/:id/my-events", (req, res) => {
+  const id = req.params.id;
+  const userPromise = User.findById(id);
+  const eventPromise = Event.find({
+    admin: { $in: [ObjectId(id)] },
+  });
+
+  Promise.all([eventPromise, userPromise]).then((result) => {
+    if (!req.session.currentUser) {
+      res.redirect("/");
+    } else {
+      res.render("my-events", {
+        events: result[0],
+        user: result[1],
+      });
+    }
+    //res.send({ events: result });
+  });
+});
+
+//* continue here: TODO=> add new events route file and initiate edit event route to edit a single event,
+//*don't forget to use the event id from the url to find event //
+
 router.post("/register", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
@@ -85,17 +111,19 @@ router.post("/login", (req, res) => {
 
 router.get("/:id", (req, res) => {
   const id = req.params.id;
-  const eventPromise = Event.find({
-    admin: { $in: [ObjectId(id)] },
+  //const eventPromise = Event.find({
+  //admin: { $in: [ObjectId(id)] },
+  //});
+  User.findById(id).then((userFromDb) => {
+    res.render("landing-page", { user: userFromDb });
   });
-  const userPromise = User.findById(id);
-  Promise.all([eventPromise, userPromise]).then((result) => {
-    res.render("landing-page", {
-      events: result[0],
-      user: result[1],
-    });
-    //res.send({ events: result });
-  });
+  //Promise.all([eventPromise, userPromise]).then((result) => {
+  //res.render("landing-page", {
+  //events: result[0],
+  //user: result[1],
+  //});
+  //res.send({ events: result });
+  //});
 });
 
 //* GET ACCOUNT
