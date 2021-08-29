@@ -1,6 +1,7 @@
 <h1>This is your user account</h1>
 <form action="/users/{{user.id}}/account" method="post">
   {{!-- <input type="text" name="email" id="email" placeholder="{{user.email}}" />  --}}
+  <label for="firstName">Your first Name: </label>
   <input
     type="text"
     name="firstName"
@@ -8,6 +9,7 @@
     placeholder="{{user.firstName}}"
     value="{{user.firstName}}"
   />
+  <label for="lastName">Your last Name: </label>
   <input
     type="text"
     name="lastName"
@@ -52,6 +54,15 @@
     id="postalCode"
     placeholder="{{user.address.postalCode}}"
     value="{{user.address.postalCode}}"
+  />
+  <label for="city">City</label>
+
+  <input
+    type="text"
+    name="city"
+    id="city"
+    placeholder="{{user.address.city}}"
+    value="{{user.address.city}}"
   />
   <label for="country">Country</label>
 

@@ -16,11 +16,12 @@ const userSchema = new Schema({
   firstName: { type: String, default: "" },
   lastName: { type: String, default: "" },
   address: {
-    addressName: { type: String, default: ""},
+    addressName: { type: String, default: "" },
     streetName: { type: String, default: "" },
     streetNumber: { type: Number, default: 0 },
     postalCode: { type: String, lenght: 5, default: "" },
     country: { type: String, default: "" },
+    city: { type: String, default: "" },
   },
 });
 

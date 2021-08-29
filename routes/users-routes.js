@@ -127,6 +127,7 @@ router.post("/:id/account", (req, res) => {
     streetNumber,
     postalCode,
     country,
+    city,
   } = req.body;
 
   //* TODO: can i add property to User model??
@@ -138,6 +139,7 @@ router.post("/:id/account", (req, res) => {
     user.address.streetNumber = streetNumber;
     user.address.postalCode = postalCode;
     user.address.country = country;
+    user.address.city = city;
     user.save().then(() => {
       res.redirect(`/users/${userId}/account`);
     });
