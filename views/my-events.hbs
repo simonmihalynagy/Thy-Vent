@@ -4,12 +4,12 @@
 
 {{#each events}}
   admin:
-  {{this.admin}}
+  {{this.admin.0.firstName}}
   <br />
   title:
   {{this.title}}
   <br />
   {{this.description}}
   <br />
-  <a href="/events/{{this.id}}/edit"><button type="submit">Edit this event</button></a>
+  <a href="/users/{{this.id}}/edit"><button type="submit">Edit this event</button></a>
 {{/each}}
