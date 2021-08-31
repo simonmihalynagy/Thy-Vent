@@ -104,7 +104,44 @@ router.get("/:eventId/edit", (req, res) => {
 
 //*POST EDIT EVENT
 router.post("/:eventId/edit", (req, res) => {
-  console.log("============>>>>" + req.body.public);
+  const eventId = req.params.eventId;
+  console.log(eventId);
+  const {
+    title,
+    startDate,
+    description,
+    duration,
+    streetNumber,
+    streetName,
+    addressName,
+    postalCode,
+    country,
+  } = req.body;
+  let public = null;
+  req.body.public === "public" ? (public = true) : (public = false);
+  console.log("public is equal to=> " + public);
+
+  const address = {
+    streetNumber,
+    streetName,
+    addressName,
+    postalCode,
+    country,
+  };
+  Event.findByIdAndUpdate(eventId, {
+    title,
+    public,
+    startDate,
+    description,
+    duration,
+    address,
+  })
+    .then((e) => {
+      console.log("updated", e);
+    })
+    .catch((err) => {
+      console.log("error for update event =>", err);
+    });
 });
 //router.get("/:eventId/edit");
 
