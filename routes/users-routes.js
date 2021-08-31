@@ -33,20 +33,41 @@ router.get("/create-event", (req, res) => {
 //* POST CREATE EVENT
 
 router.post("/create-event", (req, res) => {
-  const { title, startDate, description, duration, location } = req.body;
+  const {
+    title,
+
+    startDate,
+    description,
+    duration,
+    streetNumber,
+    streetName,
+    addressName,
+    postalCode,
+    country,
+  } = req.body;
   const admin = [req.session.currentUser];
   console.log(admin);
+  const address = {
+    streetNumber,
+    streetName,
+    addressName,
+    postalCode,
+    country,
+  };
   Event.create({
     title,
     startDate,
     description,
     duration,
-    location,
+
     admin,
-  }).then((event) => {
-    console.log("created the following event: " + event);
-    res.redirect(`/users/${admin}`);
-  });
+    address,
+  })
+    .then((event) => {
+      console.log("created the following event: " + event);
+      res.redirect(`/users/${admin}`);
+    })
+    .catch((err) => console.log("this is the error=>" + err));
 });
 
 //* GET MY EVENTS
@@ -56,7 +77,7 @@ router.get("/:id/my-events", (req, res) => {
   const userPromise = User.findById(id);
   const eventPromise = Event.find({
     admin: { $in: [ObjectId(id)] },
-  });
+  }).populate("admin");
 
   Promise.all([eventPromise, userPromise]).then((result) => {
     if (!req.session.currentUser) {
@@ -66,13 +87,26 @@ router.get("/:id/my-events", (req, res) => {
         events: result[0],
         user: result[1],
       });
+      //res.send({ events: result[0] });
     }
-    //res.send({ events: result });
   });
 });
 
-//* continue here: TODO=> add new events route file and initiate edit event route to edit a single event,
-//*don't forget to use the event id from the url to find event //
+//* GET EDIT EVENT
+
+router.get("/:eventId/edit", (req, res) => {
+  const eventId = req.params.eventId;
+  Event.findById(eventId).then((eventFromDb) => {
+    res.render("edit-event", { event: eventFromDb });
+    //res.send(eventFromDb);
+  });
+});
+
+//*POST EDIT EVENT
+router.post("/:eventId/edit", (req, res) => {
+  console.log("============>>>>" + req.body.public);
+});
+//router.get("/:eventId/edit");
 
 router.post("/register", (req, res) => {
   const email = req.body.email;

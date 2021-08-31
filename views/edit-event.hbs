@@ -1,0 +1,117 @@
+<div class="header">
+  <h1 class="text-primary"> {{event.title}}</h1>
+
+</div>
+<form class="px-4 py-3" action="/users/{{event.id}}/edit" method="POST">
+
+  <div class="form-group">
+    <label for="input-title">Title</label>
+    <input
+      type="text"
+      class="form-control"
+      id="input-title"
+      placeholder="Title"
+      value="{{event.title}}"
+      name="title"
+    />
+  </div>
+  <div class="form-group">
+    <label for="public">Availability</label>
+    <select name="public" id="public">
+      <option value="true">true</option>
+      <option value="false">false</option>
+    </select>
+
+  </div>
+
+  <div class="form-group">
+    <label for="input-startDate">Start Date</label>
+    <input
+      type="date"
+      class="form-control"
+      id="input-startDate"
+      placeholder="{{event.startDate}}"
+      value="{{event.startDate}}"
+      name="startDate"
+    />
+  </div>
+  <div class="form-group">
+    <label for="input-description">Description</label>
+    <input
+      type="text"
+      class="form-control"
+      id="input-description"
+      placeholder="{{event.description}}"
+      value="{{event.description}}"
+      name="description"
+    />
+  </div>
+  <div class="form-group">
+    <label for="input-duration">Duration</label>
+    <input
+      type="number"
+      class="form-control"
+      id="input-duration"
+      placeholder="{{event.duration}}"
+      value="{{event.duration}}"
+      name="duration"
+    />
+  </div>
+  <div class="form-group">
+    <label for="input-addressName">Address name</label>
+    <input
+      type="text"
+      class="form-control"
+      id="input-addressName"
+      placeholder="{{event.address.addressName}}"
+      value="{{event.address.addressName}}"
+      name="addressName"
+    />
+  </div>
+  <div class="form-group">
+    <label for="input-streetName">Street Name</label>
+    <input
+      type="text"
+      class="form-control"
+      id="input-streetName"
+      placeholder="{{event.address.streetName}}"
+      value="{{event.address.streetName}}"
+      name="streetName"
+    />
+  </div>
+  <div class="form-group">
+    <label for="input-streetNumber">Street Number</label>
+    <input
+      type="number"
+      class="form-control"
+      id="input-streetNumber"
+      placeholder="{{event.address.streetNumber}}"
+      value="{{event.address.streetNumber}}"
+      name="streetNumber"
+    />
+  </div>
+  <div class="form-group">
+    <label for="input-postalCode">Postal Code</label>
+    <input
+      type="text"
+      class="form-control"
+      id="input-postalCode"
+      placeholder="{{event.address.postalCode}}"
+      value="{{event.address.postalCode}}"
+      name="postalCode"
+    />
+  </div>
+  <div class="form-group">
+    <label for="input-country">Country</label>
+    <input
+      type="text"
+      class="form-control"
+      id="input-country"
+      placeholder="{{event.address.country}}"
+      value="{{event.address.country}}"
+      name="country"
+    />
+  </div>
+
+  <button type="submit" class="btn btn-primary">Create!</button>
+</form>
