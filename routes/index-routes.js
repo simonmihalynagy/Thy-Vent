@@ -8,6 +8,8 @@ router.get("/", function (req, res, next) {
   }
   res.render("index", { title: "Event App" });
 });
+
+
 router.get("/signout", (req, res) => {
   console.log(req.session.currentUser);
   delete req.session.currentUser;
