@@ -24,10 +24,13 @@ router.get("/register", (req, res) => {
 //* GET CREATE EVENT
 
 router.get("/create-event", (req, res) => {
+  const userId = req.session.currentUser;
+  User.findById(userId).then((userFromDb) => {
+    res.render("create-event", { user: userFromDb });
+  });
   // if (req.session.currentUser) {
   //   res.render("create-event");
   // }
-  res.render("create-event");
 });
 
 //* POST CREATE EVENT
@@ -44,6 +47,7 @@ router.post("/create-event", (req, res) => {
     addressName,
     postalCode,
     country,
+    city,
   } = req.body;
   const admin = [req.session.currentUser];
   console.log(admin);
@@ -53,6 +57,7 @@ router.post("/create-event", (req, res) => {
     addressName,
     postalCode,
     country,
+    city,
   };
   Event.create({
     title,
@@ -96,10 +101,19 @@ router.get("/:id/my-events", (req, res) => {
 
 router.get("/:eventId/edit", (req, res) => {
   const eventId = req.params.eventId;
-  Event.findById(eventId).then((eventFromDb) => {
-    res.render("edit-event", { event: eventFromDb });
-    //res.send(eventFromDb);
+  const userId = req.session.currentUser;
+  const userPromise = User.findById(userId);
+  const eventPromise = Event.findById(eventId);
+  Promise.all([eventPromise, userPromise]).then((resFromPromise) => {
+    res.render("edit-event", {
+      event: resFromPromise[0],
+      user: resFromPromise[1],
+    });
   });
+  // Event.findById(eventId).then((eventFromDb) => {
+  //   res.render("edit-event", { event: eventFromDb });
+  //   //res.send(eventFromDb);
+  // });
 });
 
 //*POST EDIT EVENT
@@ -116,10 +130,10 @@ router.post("/:eventId/edit", (req, res) => {
     addressName,
     postalCode,
     country,
+    city,
   } = req.body;
   let public = null;
   req.body.public === "public" ? (public = true) : (public = false);
-  console.log("public is equal to=> " + public);
 
   const address = {
     streetNumber,
@@ -127,6 +141,7 @@ router.post("/:eventId/edit", (req, res) => {
     addressName,
     postalCode,
     country,
+    city,
   };
   Event.findByIdAndUpdate(eventId, {
     title,
@@ -137,7 +152,7 @@ router.post("/:eventId/edit", (req, res) => {
     address,
   })
     .then((e) => {
-      console.log("updated", e);
+      res.redirect(`/users/${eventId}/edit`);
     })
     .catch((err) => {
       console.log("error for update event =>", err);
@@ -180,14 +195,24 @@ router.post("/login", (req, res) => {
   });
 });
 
+// LANDING PAGE!
+
 router.get("/:id", (req, res) => {
-  const id = req.params.id;
-  //const eventPromise = Event.find({
-  //admin: { $in: [ObjectId(id)] },
-  //});
-  User.findById(id).then((userFromDb) => {
-    res.render("landing-page", { user: userFromDb });
+  const userId = req.params.id;
+  const userPromise = User.findById(userId);
+  const eventPromise = Event.find().limit(4);
+  Promise.all([userPromise, eventPromise]).then((resFromPromise) => {
+    res.render("landing-page", {
+      user: resFromPromise[0],
+      events: resFromPromise[1],
+      firstEvent: resFromPromise[1][0],
+    });
   });
+  // User.findById(id).then((userFromDb) => {
+  //   res.render("landing-page", { user: userFromDb });
+  // });
+
+  //-----//
   //Promise.all([eventPromise, userPromise]).then((result) => {
   //res.render("landing-page", {
   //events: result[0],

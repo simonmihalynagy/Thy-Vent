@@ -11,5 +11,10 @@
   <br />
   {{this.description}}
   <br />
-  <a href="/users/{{this.id}}/edit"><button type="submit">Edit this event</button></a>
+  <a href="/users/{{this.id}}/edit"><button
+      class="btn btn-primary"
+      type="submit"
+    >Edit this event</button></a>
 {{/each}}
+
+<a href="/users/{{user.id}}" class="btn btn-primary">Go back!</a>
