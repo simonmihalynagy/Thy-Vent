@@ -200,11 +200,12 @@ router.post("/login", (req, res) => {
 router.get("/:id", (req, res) => {
   const userId = req.params.id;
   const userPromise = User.findById(userId);
-  const eventPromise = Event.find().limit(2);
+  const eventPromise = Event.find().limit(4);
   Promise.all([userPromise, eventPromise]).then((resFromPromise) => {
     res.render("landing-page", {
       user: resFromPromise[0],
       events: resFromPromise[1],
+      firstEvent: resFromPromise[1][0],
     });
   });
   // User.findById(id).then((userFromDb) => {

@@ -11,7 +11,7 @@ const eventSchema = new Schema({
   startDate: { type: Date, required: true },
   description: String,
   duration: Number,
-
+  url: String,
   admin: [{ type: Schema.Types.ObjectId, ref: "User" }],
   guests: [{ type: Schema.Types.ObjectId, ref: "User" }],
   address: {

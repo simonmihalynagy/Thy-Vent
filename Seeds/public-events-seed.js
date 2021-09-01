@@ -16,6 +16,7 @@ const events = [
     startDate: "2021-03-12T00:00:00.000+00:00",
     description: "Teddy Teclebrhan live in concert! Toll toll toll!",
     duration: 100,
+    url: "teddy01.jpg",
     address: {
       addressName: "Lanxess Arena",
       streetName: "Willy-Brandt-Platz ",
@@ -32,6 +33,7 @@ const events = [
     description:
       "Bosse endlich mal wieder live. Ganz ganz toll. echt so schön, blablabla",
     duration: 150,
+    url: "bosse01.jpg",
     address: {
       addressName: "Wuhlheide",
       streetName: "Straße zum FEZ",
@@ -47,6 +49,7 @@ const events = [
     startDate: "2021-10-02T00:00:00.000+00:00",
     description: "König der Löwen in Hamburch,.. mensch, wat toll!",
     duration: 90,
+    url: "lionking01.jpg",
     address: {
       addressName: "Der König der Löwen",
       streetName: "Norderelbstr.",
@@ -62,6 +65,7 @@ const events = [
     startDate: "2022-02-10T00:00:00.000+00:00",
     description: "MINE Live in Concert! cool, cool, cool.",
     duration: 120,
+    url: "mine01.jpg",
     address: {
       addressName: "Festsaal Kreuzberg",
       streetName: "Am Flutgraben",
