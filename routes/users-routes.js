@@ -7,7 +7,21 @@ const saltRounds = 10;
 const Event = require("../models/Event.model");
 const ObjectId = require("mongodb").ObjectId;
 const { session } = require("passport");
+const sgMail = require("@sendgrid/mail");
+const SG_API_KEY = process.env.SGAPIKEY;
+sgMail.setApiKey(SG_API_KEY);
 
+const createInviteMessage = (title, creator, addressArr) => {
+  const inviteMessage = {
+    from: "adamgreene209@gmail.com",
+    subject: `You are invited to join ${creator}'s event: ${title}!`,
+    text: "Follow the link to join the following event: <link>",
+    html: `<h1>${creator} invited to you to join an event</h1> <br/> <p>click on the following link to join the event!</p> <br/> <br/> 
+    <a target="_blank" href="http://localhost:3000/" >JOIN THE EVENT!</a>`,
+  };
+  inviteMessage.to = addressArr;
+  return inviteMessage;
+};
 var router = express.Router();
 /* GET users listing. */
 
@@ -24,18 +38,22 @@ router.get("/register", (req, res) => {
 //* GET CREATE EVENT
 
 router.get("/create-event", (req, res) => {
+  const userId = req.session.currentUser;
+  User.findById(userId).then((userFromDb) => {
+    res.render("create-event", { user: userFromDb });
+  });
   // if (req.session.currentUser) {
   //   res.render("create-event");
   // }
-  res.render("create-event");
 });
 
 //* POST CREATE EVENT
 
 router.post("/create-event", (req, res) => {
+  const admin = req.session.currentUser;
+
   const {
     title,
-
     startDate,
     description,
     duration,
@@ -44,30 +62,43 @@ router.post("/create-event", (req, res) => {
     addressName,
     postalCode,
     country,
+    city,
+    emailInvites,
   } = req.body;
-  const admin = [req.session.currentUser];
-  console.log(admin);
   const address = {
     streetNumber,
     streetName,
     addressName,
     postalCode,
     country,
+    city,
   };
-  Event.create({
+  let public = null;
+  req.body.public === "public" ? (public = true) : (public = false);
+
+  const invitesArr = emailInvites.split(",");
+
+  const userPromise = User.findById(admin);
+
+  const eventPromise = Event.create({
     title,
     startDate,
     description,
     duration,
-
     admin,
     address,
-  })
-    .then((event) => {
-      console.log("created the following event: " + event);
-      res.redirect(`/users/${admin}`);
-    })
-    .catch((err) => console.log("this is the error=>" + err));
+    emailInvites: invitesArr,
+    public,
+  });
+  Promise.all([userPromise, eventPromise]).then((response) => {
+    console.log("========>>>>> response from Promise.all()", response);
+    let adminName = response[0].firstName;
+    sgMail
+      .send(createInviteMessage(title, adminName, invitesArr))
+      .then((resFromSG) => {
+        res.redirect(`/users/${admin}`);
+      });
+  });
 });
 
 //* GET MY EVENTS
@@ -96,10 +127,19 @@ router.get("/:id/my-events", (req, res) => {
 
 router.get("/:eventId/edit", (req, res) => {
   const eventId = req.params.eventId;
-  Event.findById(eventId).then((eventFromDb) => {
-    res.render("edit-event", { event: eventFromDb });
-    //res.send(eventFromDb);
+  const userId = req.session.currentUser;
+  const userPromise = User.findById(userId);
+  const eventPromise = Event.findById(eventId);
+  Promise.all([eventPromise, userPromise]).then((resFromPromise) => {
+    res.render("edit-event", {
+      event: resFromPromise[0],
+      user: resFromPromise[1],
+    });
   });
+  // Event.findById(eventId).then((eventFromDb) => {
+  //   res.render("edit-event", { event: eventFromDb });
+  //   //res.send(eventFromDb);
+  // });
 });
 
 //*POST EDIT EVENT
@@ -116,10 +156,10 @@ router.post("/:eventId/edit", (req, res) => {
     addressName,
     postalCode,
     country,
+    city,
   } = req.body;
   let public = null;
   req.body.public === "public" ? (public = true) : (public = false);
-  console.log("public is equal to=> " + public);
 
   const address = {
     streetNumber,
@@ -127,6 +167,7 @@ router.post("/:eventId/edit", (req, res) => {
     addressName,
     postalCode,
     country,
+    city,
   };
   Event.findByIdAndUpdate(eventId, {
     title,
@@ -137,7 +178,7 @@ router.post("/:eventId/edit", (req, res) => {
     address,
   })
     .then((e) => {
-      console.log("updated", e);
+      res.redirect(`/users/${eventId}/edit`);
     })
     .catch((err) => {
       console.log("error for update event =>", err);
@@ -180,14 +221,24 @@ router.post("/login", (req, res) => {
   });
 });
 
+// LANDING PAGE!
+
 router.get("/:id", (req, res) => {
-  const id = req.params.id;
-  //const eventPromise = Event.find({
-  //admin: { $in: [ObjectId(id)] },
-  //});
-  User.findById(id).then((userFromDb) => {
-    res.render("landing-page", { user: userFromDb });
+  const userId = req.params.id;
+  const userPromise = User.findById(userId);
+  const eventPromise = Event.find().limit(4);
+  Promise.all([userPromise, eventPromise]).then((resFromPromise) => {
+    res.render("landing-page", {
+      user: resFromPromise[0],
+      events: resFromPromise[1],
+      firstEvent: resFromPromise[1][0],
+    });
   });
+  // User.findById(id).then((userFromDb) => {
+  //   res.render("landing-page", { user: userFromDb });
+  // });
+
+  //-----//
   //Promise.all([eventPromise, userPromise]).then((result) => {
   //res.render("landing-page", {
   //events: result[0],

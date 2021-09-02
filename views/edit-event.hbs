@@ -16,10 +16,10 @@
     />
   </div>
   <div class="form-group">
-    <label for="availability">Availability</label>
+    <label for="availability">Should your event be Public?</label>
     <select name="public" id="availability">
-      <option value="public">true</option>
-      <option value="private">false</option>
+      <option value="public">yes</option>
+      <option value="private">no</option>
     </select>
 
   </div>
@@ -102,6 +102,17 @@
     />
   </div>
   <div class="form-group">
+    <label for="input-city">City</label>
+    <input
+      type="text"
+      class="form-control"
+      id="input-city"
+      placeholder="{{event.address.city}}"
+      value="{{event.address.city}}"
+      name="city"
+    />
+  </div>
+  <div class="form-group">
     <label for="input-country">Country</label>
     <input
       type="text"
@@ -115,3 +126,4 @@
 
   <button type="submit" class="btn btn-primary">Save changes</button>
 </form>
+<a href="/users/{{user.id}}/my-events" class="btn btn-primary">Go back!</a>

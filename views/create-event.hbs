@@ -85,6 +85,16 @@
     />
   </div>
   <div class="form-group">
+    <label for="input-city">City</label>
+    <input
+      type="text"
+      class="form-control"
+      id="input-city"
+      placeholder="City"
+      name="city"
+    />
+  </div>
+  <div class="form-group">
     <label for="input-country">Country</label>
     <input
       type="text"
@@ -95,5 +105,28 @@
     />
   </div>
 
+  <div class="form-group">
+    <label for="availability">Should your event be Public?</label>
+    <select name="public" id="availability">
+      <option value="public">yes</option>
+      <option value="private">no</option>
+    </select>
+
+  </div>
+  <div class="form-group">
+    <label for="input-emailInvites">Invite by Email:</label>
+
+    <textarea
+      type="textfield"
+      id="input-emailInvites"
+      label="Outlined"
+      name="emailInvites"
+      placeholder="put email-addresses here!"
+      style="width:100%"
+    ></textarea>
+    <p>&#128680 Addresses must be seperated by comma! &#128680</p>
+  </div>
+
   <button type="submit" class="btn btn-primary">Create!</button>
+  <a href="/users/{{user.id}}" class="btn btn-primary">Go Back!</a>
 </form>
