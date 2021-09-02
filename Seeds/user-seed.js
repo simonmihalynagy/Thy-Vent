@@ -19,7 +19,7 @@ function hashPassword(clearPassword) {
 
 const users = [
   {
-    email: "alex@alex.de",
+    email: "alex987@mailinator.com",
     firstName: "Alex",
     lastName: "Bauer",
     passwordHash: hashPassword("Alex123"),
@@ -33,7 +33,7 @@ const users = [
     },
   },
   {
-    email: "jan@jan.de",
+    email: "jan987@mailinator.com",
     firstName: "Jan",
     lastName: "Schmidt",
     passwordHash: hashPassword("Jan123"),
@@ -47,7 +47,7 @@ const users = [
     },
   },
   {
-    email: "mia@mia.de",
+    email: "mia987@mailinator.com",
     firstName: "Mia",
     lastName: "San Mia",
     passwordHash: hashPassword("Mia123"),
@@ -61,7 +61,7 @@ const users = [
     },
   },
   {
-    email: "shai@shai.de",
+    email: "shai987@mailinator.com",
     firstName: "Shai",
     lastName: "Maestro",
     passwordHash: hashPassword("Shai123"),
@@ -75,7 +75,7 @@ const users = [
     },
   },
   {
-    email: "neyla@neyla.de",
+    email: "neyla987@mailinator.com",
     firstName: "Neyla",
     lastName: "Mari",
     passwordHash: hashPassword("Neyla123"),

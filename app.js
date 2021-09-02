@@ -8,8 +8,8 @@ require("dotenv").config();
 var indexRouter = require("./routes/index-routes");
 var usersRouter = require("./routes/users-routes");
 
-const app = express();
 
+const app = express();
 
 require("./config/db-connection");
 require("./config/session-config")(app);
