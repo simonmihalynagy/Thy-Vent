@@ -291,7 +291,6 @@ router.post("/:id/account", (req, res) => {
     city,
   } = req.body;
 
-  //* TODO: can i add property to User model??
   User.findById(userId).then((user) => {
     user.firstName = firstName;
     user.lastName = lastName;
@@ -304,6 +303,13 @@ router.post("/:id/account", (req, res) => {
     user.save().then(() => {
       res.redirect(`/users/${userId}/account`);
     });
+  });
+});
+
+router.get("/:userId/delete-account", (req, res) => {
+  const userId = req.params.userId;
+  User.findByIdAndDelete(userId).then(() => {
+    res.redirect("/signout");
   });
 });
 
