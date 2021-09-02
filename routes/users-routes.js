@@ -7,7 +7,21 @@ const saltRounds = 10;
 const Event = require("../models/Event.model");
 const ObjectId = require("mongodb").ObjectId;
 const { session } = require("passport");
+const sgMail = require("@sendgrid/mail");
+const SG_API_KEY = process.env.SGAPIKEY;
+sgMail.setApiKey(SG_API_KEY);
 
+const createInviteMessage = (title, creator, addressArr) => {
+  const inviteMessage = {
+    from: "adamgreene209@gmail.com",
+    subject: `You are invited to join ${creator}'s event: ${title}!`,
+    text: "Follow the link to join the following event: <link>",
+    html: `<h1>${creator} invited to you to join an event</h1> <br/> <p>click on the following link to join the event!</p> <br/> <br/> 
+    <a target="_blank" href="http://localhost:3000/" >JOIN THE EVENT!</a>`,
+  };
+  inviteMessage.to = addressArr;
+  return inviteMessage;
+};
 var router = express.Router();
 /* GET users listing. */
 
@@ -36,9 +50,10 @@ router.get("/create-event", (req, res) => {
 //* POST CREATE EVENT
 
 router.post("/create-event", (req, res) => {
+  const admin = req.session.currentUser;
+
   const {
     title,
-
     startDate,
     description,
     duration,
@@ -48,9 +63,8 @@ router.post("/create-event", (req, res) => {
     postalCode,
     country,
     city,
+    emailInvites,
   } = req.body;
-  const admin = [req.session.currentUser];
-  console.log(admin);
   const address = {
     streetNumber,
     streetName,
@@ -59,20 +73,32 @@ router.post("/create-event", (req, res) => {
     country,
     city,
   };
-  Event.create({
+  let public = null;
+  req.body.public === "public" ? (public = true) : (public = false);
+
+  const invitesArr = emailInvites.split(",");
+
+  const userPromise = User.findById(admin);
+
+  const eventPromise = Event.create({
     title,
     startDate,
     description,
     duration,
-
     admin,
     address,
-  })
-    .then((event) => {
-      console.log("created the following event: " + event);
-      res.redirect(`/users/${admin}`);
-    })
-    .catch((err) => console.log("this is the error=>" + err));
+    emailInvites: invitesArr,
+    public,
+  });
+  Promise.all([userPromise, eventPromise]).then((response) => {
+    console.log("========>>>>> response from Promise.all()", response);
+    let adminName = response[0].firstName;
+    sgMail
+      .send(createInviteMessage(title, adminName, invitesArr))
+      .then((resFromSG) => {
+        res.redirect(`/users/${admin}`);
+      });
+  });
 });
 
 //* GET MY EVENTS
