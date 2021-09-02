@@ -127,6 +127,17 @@
     <p>&#128680 Addresses must be seperated by comma! &#128680</p>
   </div>
 
+  <label for="guests">Add guests:</label>
+  <select name="guests" id="guests" multiple>
+
+    {{#each users}}
+      <option value="{{this.id}}">{{this.firstName}} {{this.lastName}}</option>
+      <br />
+    {{/each}}
+  </select>
+  <br />
   <button type="submit" class="btn btn-primary">Create!</button>
-  <a href="/users/{{user.id}}" class="btn btn-primary">Go Back!</a>
+  <br />
+  <hr />
+  <a href="/users/{{admin.id}}" class="btn btn-primary">Go Back!</a>
 </form>

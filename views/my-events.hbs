@@ -1,8 +1,9 @@
 <h1>Dear {{user.firstName}}, here are your events:</h1>
 <br />
 <h4>To edit your events, click edit below the event</h4>
-
-{{#each events}}
+<h2>Events you created:</h2>
+<br />
+{{#each adminEvents}}
   admin:
   {{this.admin.0.firstName}}
   <br />
@@ -21,6 +22,11 @@
       type="submit"
     >Delete this event</button></a>
   <br />
+{{/each}}
+
+<h2>Events you attend:</h2>
+{{#each guestEvents}}
+  <h3>title: {{this.title}}</h3>
 {{/each}}
 
 <a href="/users/{{user.id}}" class="btn btn-primary">Go back!</a>

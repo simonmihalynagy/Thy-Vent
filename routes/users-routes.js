@@ -39,8 +39,11 @@ router.get("/register", (req, res) => {
 
 router.get("/create-event", (req, res) => {
   const userId = req.session.currentUser;
-  User.findById(userId).then((userFromDb) => {
-    res.render("create-event", { user: userFromDb });
+  const allUsersPromise = User.find();
+  const adminUserPromise = User.findById(userId);
+
+  Promise.all([allUsersPromise, adminUserPromise]).then((result) => {
+    res.render("create-event", { users: result[0], admin: result[1] });
   });
   // if (req.session.currentUser) {
   //   res.render("create-event");
@@ -50,6 +53,7 @@ router.get("/create-event", (req, res) => {
 //* POST CREATE EVENT
 
 router.post("/create-event", (req, res) => {
+  //console.log(req.body);
   const admin = req.session.currentUser;
 
   const {
@@ -64,6 +68,7 @@ router.post("/create-event", (req, res) => {
     country,
     city,
     emailInvites,
+    guests,
   } = req.body;
   const address = {
     streetNumber,
@@ -89,10 +94,14 @@ router.post("/create-event", (req, res) => {
     address,
     emailInvites: invitesArr,
     public,
+    guests,
   });
   Promise.all([userPromise, eventPromise]).then((response) => {
     console.log("========>>>>> response from Promise.all()", response);
     let adminName = response[0].firstName;
+    // if (invitesArr[0]==="") {
+    //   res.redirect(`/users/${admin}`);
+    // }
     sgMail
       .send(createInviteMessage(title, adminName, invitesArr))
       .then((resFromSG) => {
@@ -106,21 +115,29 @@ router.post("/create-event", (req, res) => {
 router.get("/:id/my-events", (req, res) => {
   const id = req.params.id;
   const userPromise = User.findById(id);
-  const eventPromise = Event.find({
+  const adminsEventsPromise = Event.find({
     admin: { $in: [ObjectId(id)] },
   }).populate("admin");
 
-  Promise.all([eventPromise, userPromise]).then((result) => {
-    if (!req.session.currentUser) {
-      res.redirect("/");
-    } else {
-      res.render("my-events", {
-        events: result[0],
-        user: result[1],
-      });
-      //res.send({ events: result[0] });
-    }
+  //* get the events that admin attends as guest
+  const guestEventPromise = Event.find({
+    guests: { $in: [ObjectId(id)] },
   });
+
+  Promise.all([adminsEventsPromise, userPromise, guestEventPromise]).then(
+    (result) => {
+      if (!req.session.currentUser) {
+        res.redirect("/");
+      } else {
+        res.render("my-events", {
+          adminEvents: result[0],
+          user: result[1],
+          guestEvents: result[2],
+        });
+        //res.send({ events: result[0] });
+      }
+    }
+  );
 });
 
 //* GET EDIT EVENT
