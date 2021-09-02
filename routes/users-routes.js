@@ -184,7 +184,18 @@ router.post("/:eventId/edit", (req, res) => {
       console.log("error for update event =>", err);
     });
 });
-//router.get("/:eventId/edit");
+
+//** POST DELETE EVENT*/
+
+router.get("/:eventId/delete", (req, res) => {
+  const eventId = req.params.eventId;
+  const userId = req.session.currentUser;
+  //console.log("this is the event id: " + eventId);
+  Event.findByIdAndDelete(eventId).then(() => {
+    console.log("deleted the event");
+    res.redirect(`/users/${userId}/my-events`);
+  });
+});
 
 router.post("/register", (req, res) => {
   const email = req.body.email;
