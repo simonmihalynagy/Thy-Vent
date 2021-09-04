@@ -10,6 +10,9 @@ const { session } = require("passport");
 const sgMail = require("@sendgrid/mail");
 const SG_API_KEY = process.env.SGAPIKEY;
 sgMail.setApiKey(SG_API_KEY);
+const axios = require("axios").default;
+
+// axios.<method> will now provide autocomplete and parameter typings
 
 const createInviteMessage = (title, creator, addressArr) => {
   const inviteMessage = {
@@ -53,9 +56,7 @@ router.get("/create-event", (req, res) => {
 //* POST CREATE EVENT
 
 router.post("/create-event", (req, res) => {
-  //console.log(req.body);
   const admin = req.session.currentUser;
-
   const {
     title,
     startDate,
@@ -70,44 +71,58 @@ router.post("/create-event", (req, res) => {
     emailInvites,
     guests,
   } = req.body;
-  const address = {
-    streetNumber,
-    streetName,
-    addressName,
-    postalCode,
-    country,
-    city,
-  };
-  let public = null;
-  req.body.public === "public" ? (public = true) : (public = false);
-
   const invitesArr = emailInvites.split(",");
 
-  const userPromise = User.findById(admin);
+  const geoPromise = axios
+    .get(
+      `https://api.mapbox.com/geocoding/v5/mapbox.places/${streetName}%20${streetNumber}%20${postalCode}%20${city}.json?access_token=pk.eyJ1IjoidWRvd3VkbyIsImEiOiJja3QybzlhbTUwbTJrMnZyMHRjbnN4ZGVvIn0.3d31bUy83HSymA6Cqz6PJQ`
+    )
+    .then((resFromApi) => {
+      const coordinatesLongLat = resFromApi.data.features[0].center;
 
-  const eventPromise = Event.create({
-    title,
-    startDate,
-    description,
-    duration,
-    admin,
-    address,
-    emailInvites: invitesArr,
-    public,
-    guests,
-  });
-  Promise.all([userPromise, eventPromise]).then((response) => {
-    console.log("========>>>>> response from Promise.all()", response);
-    let adminName = response[0].firstName;
-    // if (invitesArr[0]==="") {
-    //   res.redirect(`/users/${admin}`);
-    // }
-    sgMail
-      .send(createInviteMessage(title, adminName, invitesArr))
-      .then((resFromSG) => {
-        res.redirect(`/users/${admin}`);
+      const address = {
+        streetNumber,
+        streetName,
+        addressName,
+        postalCode,
+        country,
+        city,
+        longitude: coordinatesLongLat[0],
+        latitude: coordinatesLongLat[1],
+      };
+      let public = req.body.public === "public";
+
+      const userPromise = User.findById(admin);
+
+      const eventPromise = Event.create({
+        title,
+        startDate,
+        description,
+        duration,
+        admin,
+        address,
+        emailInvites: invitesArr,
+        public,
+        guests,
       });
-  });
+      return Promise.all([userPromise, eventPromise]);
+    })
+    .then((response) => {
+      console.log("========>>>>> response from Promise.all()", response);
+      let adminName = response[0].firstName;
+      // if (invitesArr[0]==="") {
+      //   res.redirect(`/users/${admin}`);
+      // }
+      if (invitesArr[0] === "") {
+        res.redirect(`/users/${admin}`);
+      } else {
+        sgMail
+          .send(createInviteMessage(title, adminName, invitesArr))
+          .then((resFromSG) => {
+            res.redirect(`/users/${admin}`);
+          });
+      }
+    });
 });
 
 //* GET MY EVENTS
