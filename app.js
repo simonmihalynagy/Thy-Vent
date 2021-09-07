@@ -8,7 +8,6 @@ require("dotenv").config();
 var indexRouter = require("./routes/index-routes");
 var usersRouter = require("./routes/users-routes");
 
-
 const app = express();
 
 require("./config/db-connection");
@@ -23,6 +22,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
+
+// MAPBOX
+
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);

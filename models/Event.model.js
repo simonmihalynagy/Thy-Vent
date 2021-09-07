@@ -22,6 +22,8 @@ const eventSchema = new Schema({
     postalCode: { type: String, lenght: 5, default: "" },
     country: { type: String, default: "" },
     city: { type: String, default: "" },
+    longitude: Number,
+    latitude: Number,
   },
 });
 
