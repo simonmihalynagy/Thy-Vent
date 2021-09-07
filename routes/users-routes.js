@@ -229,6 +229,21 @@ router.get("/:eventId/delete", (req, res) => {
   });
 });
 
+/// SHOW EVENT DETAILS PAGE!
+router.get("/:eventId/details", (req, res) => {
+  const eventId = req.params.eventId;
+
+  Event.findById(eventId).then((singleEvent) => {
+    res.render("event-details", {
+      eventObj: singleEvent,
+      longitude: singleEvent.address.longitude,
+      latitude: singleEvent.address.latitude,
+    });
+  });
+});
+
+///
+
 router.post("/register", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;

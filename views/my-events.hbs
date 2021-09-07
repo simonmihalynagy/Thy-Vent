@@ -17,16 +17,24 @@
       type="submit"
     >Edit this event</button></a>
   <br />
+  <br />
   <a href="/users/{{this.id}}/delete"><button
       class="btn btn-primary"
       type="submit"
     >Delete this event</button></a>
   <br />
+  <br />
+  <a href="/users/{{this.id}}/details"><button class="btn btn-primary">Show
+      Details</button></a>
+  <br />
+  <br />
+  <hr />
 {{/each}}
 
 <h2>Events you attend:</h2>
 {{#each guestEvents}}
   <h3>title: {{this.title}}</h3>
+  <br />
 {{/each}}
 
 <a href="/users/{{user.id}}" class="btn btn-primary">Go back!</a>
