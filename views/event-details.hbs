@@ -1,0 +1,19 @@
+<h1>Details for {{eventObj.title}} </h1>
+<div id="map" style="width: 80%; height: 350px;"></div>
+<script>
+  mapboxgl.accessToken =
+  'pk.eyJ1IjoidWRvd3VkbyIsImEiOiJja3QybzlhbTUwbTJrMnZyMHRjbnN4ZGVvIn0.3d31bUy83HSymA6Cqz6PJQ';
+  var map = new mapboxgl.Map({ container: 'map', style:
+  'mapbox://styles/mapbox/streets-v11', center:[9.4797,51.3127],zoom:5 }); const
+  marker1 = new mapboxgl.Marker() .setLngLat([{{longitude}},{{latitude}}])
+  .addTo(map);
+</script>
+<br />
+<br />
+<h4>{{eventObj.address.addressName}}</h4>
+<h4>{{eventObj.address.streetName}} {{eventObj.address.streetNumber}}</h4>
+<h4>{{eventObj.address.postalCode}} {{eventObj.address.city}}</h4>
+<h4>{{eventObj.address.country}}</h4>
+<br />
+<br />
+<p>{{eventObj.description}}</p>
