@@ -24,6 +24,8 @@ const events = [
       postalCode: "50569",
       country: "Germany",
       city: "Köln",
+      latitude: 50.93872,
+      longitude: 6.98424,
     },
   },
   {
@@ -41,6 +43,8 @@ const events = [
       postalCode: "12459",
       country: "Germany",
       city: "Berlin",
+      latitude: 52.46215,
+      longitude: 13.54657,
     },
   },
   {
@@ -57,6 +61,8 @@ const events = [
       postalCode: "20457",
       country: "Germany",
       city: "Hamburg",
+      longitude: 9.9733,
+      latitude: 53.53954,
     },
   },
   {
@@ -73,6 +79,8 @@ const events = [
       postalCode: "12435",
       country: "Germany",
       city: "Berlin",
+      latitude: 52.49706,
+      longitude: 13.4516,
     },
   },
 ];

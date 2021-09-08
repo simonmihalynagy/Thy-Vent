@@ -1,11 +1,11 @@
-<h1>Details for {{eventObj.title}} </h1>
+<h1>{{eventObj.title}} </h1>
 <div id="map" style="width: 80%; height: 350px;"></div>
 <script>
   mapboxgl.accessToken =
   'pk.eyJ1IjoidWRvd3VkbyIsImEiOiJja3QybzlhbTUwbTJrMnZyMHRjbnN4ZGVvIn0.3d31bUy83HSymA6Cqz6PJQ';
   var map = new mapboxgl.Map({ container: 'map', style:
-  'mapbox://styles/mapbox/streets-v11', center:[9.4797,51.3127],zoom:5 }); const
-  marker1 = new mapboxgl.Marker() .setLngLat([{{longitude}},{{latitude}}])
+  'mapbox://styles/mapbox/streets-v11', center:[{{longitude}},{{latitude}}],zoom:7
+  }); const marker1 = new mapboxgl.Marker() .setLngLat([{{longitude}},{{latitude}}])
   .addTo(map);
 </script>
 <br />
@@ -17,3 +17,5 @@
 <br />
 <br />
 <p>{{eventObj.description}}</p>
+<br /><br />
+<a href="/users/{{userId}}/my-events" class="btn btn-primary">Go back!</a>
