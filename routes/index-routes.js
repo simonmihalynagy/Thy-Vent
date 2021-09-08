@@ -24,11 +24,26 @@ router.get("/public-events/", (req, res) => {
   })
     .populate("admin")
     .then((resFromDb) => {
+      const monthArr = resFromDb.map((event) => {
+        return event.startDate.toLocaleString("en-US", { month: "long" });
+      });
+
+      resFromDb.forEach((element) => {
+        element.month = element.startDate.toLocaleString("en-US", {
+          month: "short",
+        });
+        element.year = element.startDate.getFullYear();
+        element.day = element.startDate.toLocaleString("en-US", {
+          day: "2-digit",
+        });
+      });
+      console.log(resFromDb);
       res.render("public-events", {
         events: resFromDb,
         user: req.session.currentUser,
       });
     });
 });
+
 
 module.exports = router;

@@ -1,5 +1,9 @@
-<h1>{{eventObj.title}} </h1>
-<div id="map" style="width: 80%; height: 350px;"></div>
+<h5 class="event-box">{{eventObj.title}},
+  {{eventObj.month}}
+  {{eventObj.day}}th,
+  {{eventObj.year}}
+</h5>
+<div class="event-box" id="map" style="width: 100%; height: 250px;"></div>
 <script>
   mapboxgl.accessToken =
   'pk.eyJ1IjoidWRvd3VkbyIsImEiOiJja3QybzlhbTUwbTJrMnZyMHRjbnN4ZGVvIn0.3d31bUy83HSymA6Cqz6PJQ';
@@ -8,14 +12,15 @@
   }); const marker1 = new mapboxgl.Marker() .setLngLat([{{longitude}},{{latitude}}])
   .addTo(map);
 </script>
-<br />
-<br />
-<h4>{{eventObj.address.addressName}}</h4>
-<h4>{{eventObj.address.streetName}} {{eventObj.address.streetNumber}}</h4>
-<h4>{{eventObj.address.postalCode}} {{eventObj.address.city}}</h4>
-<h4>{{eventObj.address.country}}</h4>
-<br />
-<br />
-<p>{{eventObj.description}}</p>
-<br /><br />
-<a href="/users/{{userId}}/my-events" class="btn btn-primary">Go back!</a>
+
+<div class="event-box">
+  <h4>{{eventObj.address.addressName}}</h4>
+  <h4>{{eventObj.address.streetName}} {{eventObj.address.streetNumber}}</h4>
+  <h4>{{eventObj.address.postalCode}} {{eventObj.address.city}}</h4>
+  <h4>{{eventObj.address.country}}</h4>
+  <br />
+  <br />
+  <p>{{eventObj.description}}</p>
+  <br /><br />
+</div>
+<a href="/users/{{userId}}/" class="btn btn-primary">Go back!</a>
