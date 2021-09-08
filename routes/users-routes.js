@@ -240,6 +240,13 @@ router.get("/:eventId/details", (req, res) => {
   const eventId = req.params.eventId;
 
   Event.findById(eventId).then((singleEvent) => {
+    singleEvent.month = singleEvent.startDate.toLocaleString("en-US", {
+      month: "short",
+    });
+    singleEvent.year = singleEvent.startDate.getFullYear();
+    singleEvent.day = singleEvent.startDate.toLocaleString("en-US", {
+      day: "2-digit",
+    });
     res.render("event-details", {
       userId: req.session.currentUser,
       eventObj: singleEvent,
@@ -262,6 +269,18 @@ router.get("/:eventId/leave", (req, res) => {
     console.log(resFromDb);
     res.redirect(`/users/${userId}/my-events`);
   });
+});
+
+///  JOIN A PUBLIC EVENT
+
+router.get("/:eventId/join", (req, res) => {
+  const userId = req.session.currentUser;
+  const eventId = req.params.eventId;
+  Event.findByIdAndUpdate({ _id: eventId }, { $push: { guests: userId } }).then(
+    (resFromDb) => {
+      res.redirect("/public-events/");
+    }
+  );
 });
 
 /// REGISTER!
