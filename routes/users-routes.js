@@ -71,7 +71,7 @@ router.post("/create-event", (req, res) => {
     emailInvites,
     guests,
   } = req.body;
-  const invitesArr = emailInvites.split(",");
+  const invitesArr = emailInvites.toLowerCase().split(",");
 
   const geoPromise = axios
     .get(
@@ -249,14 +249,15 @@ router.post("/register", (req, res) => {
   const password = req.body.password;
   const salt = bcryptjs.genSaltSync(saltRounds);
   const hashedPassword = bcryptjs.hashSync(password, salt);
-  console.log("================>" + hashedPassword);
-  console.log("================>" + email);
-  User.find().then((res) => {
-    console.log(res);
-  });
   User.create({ email, passwordHash: hashedPassword }).then((resFromDb) => {
-    console.log("================> created a new user!");
-    res.redirect("/");
+    Event.updateMany(
+      {
+        emailInvites: { $in: [resFromDb.email] },
+      },
+      { $push: { guests: resFromDb.id } }
+    ).then((updatedEvents) => {
+      res.redirect("/");
+    });
   });
 });
 
