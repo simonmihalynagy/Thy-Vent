@@ -11,3 +11,15 @@ a {
   text-align: center;
   margin: 30px;
 }
+
+.event-box {
+  border: 1px solid black;
+  padding: 15px 0px 15px 5px;
+  margin: 10px 0px 20px 0px;
+  box-shadow: 5px 5px 7px 1px rgba(3, 123, 255, 0.5);
+}
+.alerta {
+  border: 1px solid black!;
+  border-radius: 1px!;
+  box-shadow: 5px 5px 7px 1px rgba(255, 0, 0, 0.5);
+}

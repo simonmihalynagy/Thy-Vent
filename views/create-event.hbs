@@ -1,8 +1,8 @@
-<div class="header">
+<div class="header event-box">
   <h1 class="text-primary"> Create an Event!</h1>
 
 </div>
-<form class="px-4 py-3" action="/users/create-event" method="POST">
+<form class="px-4 py-3 event-box" action="/users/create-event" method="POST">
 
   <div class="form-group">
     <label for="input-title">Title</label>
@@ -139,5 +139,8 @@
   <button type="submit" class="btn btn-primary">Create!</button>
   <br />
   <hr />
-  <a href="/users/{{admin.id}}" class="btn btn-primary">Go Back!</a>
+
 </form>
+<div class="event-box">
+  <a href="/users/{{admin.id}}" class="btn btn-primary">Go Back!</a>
+</div>

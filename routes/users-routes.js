@@ -148,6 +148,12 @@ router.get("/:id/my-events", (req, res) => {
           adminEvents: result[0],
           user: result[1],
           guestEvents: result[2],
+          notAttending:
+            result[2].length === 0 ? "You didnt join any events yet!" : "",
+          notHosting:
+            result[0].length === 0
+              ? "You didnt create any events just yet!"
+              : "",
         });
         //res.send({ events: result[0] });
       }
@@ -235,6 +241,7 @@ router.get("/:eventId/details", (req, res) => {
 
   Event.findById(eventId).then((singleEvent) => {
     res.render("event-details", {
+      userId: req.session.currentUser,
       eventObj: singleEvent,
       longitude: singleEvent.address.longitude,
       latitude: singleEvent.address.latitude,
@@ -242,8 +249,22 @@ router.get("/:eventId/details", (req, res) => {
   });
 });
 
-///
+/// LEAVE AN EVENT YOU ATTEND
 
+router.get("/:eventId/leave", (req, res) => {
+  const eventId = req.params.eventId;
+  const userId = req.session.currentUser;
+  console.log("this is the userId", userId);
+  Event.updateOne(
+    { _id: eventId },
+    { $pull: { guests: { $in: userId } } }
+  ).then((resFromDb) => {
+    console.log(resFromDb);
+    res.redirect(`/users/${userId}/my-events`);
+  });
+});
+
+/// REGISTER!
 router.post("/register", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
