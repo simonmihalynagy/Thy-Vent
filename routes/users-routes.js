@@ -258,9 +258,8 @@ router.get("/:eventId/details", (req, res) => {
   });
 });
 
-
 //**REGISTER ROUTE */
-=======
+
 /// LEAVE AN EVENT YOU ATTEND
 
 router.get("/:eventId/leave", (req, res) => {
@@ -277,7 +276,6 @@ router.get("/:eventId/leave", (req, res) => {
 });
 
 ///  JOIN A PUBLIC EVENT
-
 
 router.get("/:eventId/join", (req, res) => {
   const userId = req.session.currentUser;

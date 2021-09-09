@@ -36,7 +36,6 @@
 
 <h4>Events you attend:</h4>
 
-
 {{! copied details button here as well to be able to access details form events that you attend }}
 
 <h2>Events you attend:</h2>
@@ -45,30 +44,33 @@
   <a href="/users/{{this.id}}/details"><button class="btn btn-primary">Show
       Details</button></a>
 
-{{#each guestEvents}}
-  <div class="event-box">
-    <br />
-    <h3>{{this.title}}</h3>
-    
-    <br />
+  {{#each guestEvents}}
+    <div class="event-box">
+      <br />
+      <h3>{{this.title}}</h3>
 
-    <a href="/users/{{this.id}}/details"><button
-        class="btn btn-primary inline"
-        type="submit"
-      >Details</button></a>
-    <a href="/users/{{this.id}}/leave"><button
-        class="btn btn-primary inline"
-        type="submit"
-      >Leave Event</button></a>
+      <br />
 
-  </div>
+      <a href="/users/{{this.id}}/details"><button
+          class="btn btn-primary inline"
+          type="submit"
+        >Details</button></a>
+      <a href="/users/{{this.id}}/leave"><button
+          class="btn btn-primary inline"
+          type="submit"
+        >Leave Event</button></a>
 
+    </div>
+
+  {{/each}}
+  {{#if notAttending}}
+    <div class="event-box">
+      <p>{{notAttending}}</p>
+    </div>
+  {{/if}}
 {{/each}}
-{{#if notAttending}}
-  <div class="event-box">
-    <p>{{notAttending}}</p>
-  </div>
-{{/if}}
 
-<br /><br />
+<br />
+<br />
+
 <a href="/users/{{user.id}}" class="btn btn-primary">Go back!</a>
