@@ -6,8 +6,9 @@ const Event = require("../models/Event.model");
 router.get("/", function (req, res, next) {
   if (req.session.currentUser) {
     res.redirect(`/users/${req.session.currentUser}`);
+  } else {
+    res.render("index", { title: "Event App" });
   }
-  res.render("index", { title: "Event App" });
 });
 
 router.get("/signout", (req, res) => {
@@ -44,6 +45,5 @@ router.get("/public-events/", (req, res) => {
       });
     });
 });
-
 
 module.exports = router;
