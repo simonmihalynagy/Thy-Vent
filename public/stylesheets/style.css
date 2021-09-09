@@ -23,3 +23,11 @@ a {
   border-radius: 1px!;
   box-shadow: 5px 5px 7px 1px rgba(255, 0, 0, 0.5);
 }
+.valid-container {
+  display: flex;
+  justify-content: space-around;
+  padding: 10px;
+}
+#valid {
+  width: 80vw;
+}

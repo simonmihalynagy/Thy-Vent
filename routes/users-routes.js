@@ -415,7 +415,7 @@ router.get("/qrcode/:eventId", (req, res) => {
   const eventId = req.params.eventId;
 
   QRcode.toDataURL(
-    `http://localhost:3000/users/validate-with-qrcode/${guestId}/${eventId}`
+    `http://192.168.178.72:3000/users/validate-with-qrcode/${guestId}/${eventId}`
   )
     .then((url) => {
       res.render("qrcode", { url: url });
@@ -436,7 +436,7 @@ router.get("/validate-with-qrcode/:guestId/:eventId", (req, res) => {
 
   Event.findById(eventId).then((event) => {
     if (
-      event.admin === req.session.currentUser &&
+      //  ONLY REMOVED FOR TESTING PURPOSES // event.admin === req.session.currentUser &&
       event.guests.includes(guestId)
     ) {
       res.render("qrcode-valid");
