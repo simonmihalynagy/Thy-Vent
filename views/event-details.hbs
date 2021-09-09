@@ -13,6 +13,10 @@
   .addTo(map);
 </script>
 
+<br />
+
+
+
 <div class="event-box">
   <h4>{{eventObj.address.addressName}}</h4>
   <h4>{{eventObj.address.streetName}} {{eventObj.address.streetNumber}}</h4>
@@ -23,4 +27,8 @@
   <p>{{eventObj.description}}</p>
   <br /><br />
 </div>
+<a href="/users/qrcode/{{eventObj.id}}" class="btn btn-primary">
+  Generate QR-code
+</a>
 <a href="/users/{{userId}}/" class="btn btn-primary">Go back!</a>
+

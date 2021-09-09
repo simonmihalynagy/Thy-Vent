@@ -36,6 +36,15 @@
 
 <h4>Events you attend:</h4>
 
+
+{{! copied details button here as well to be able to access details form events that you attend }}
+
+<h2>Events you attend:</h2>
+{{#each guestEvents}}
+  <h3>title: {{this.title}}</h3>
+  <a href="/users/{{this.id}}/details"><button class="btn btn-primary">Show
+      Details</button></a>
+
 {{#each guestEvents}}
   <div class="event-box">
     <br />
@@ -53,6 +62,7 @@
       >Leave Event</button></a>
 
   </div>
+
 {{/each}}
 {{#if notAttending}}
   <div class="event-box">

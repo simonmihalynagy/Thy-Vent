@@ -22,7 +22,8 @@
     "mapbox-gl": "^2.4.1",
     "mongoose": "^5.13.7",
     "morgan": "~1.9.1",
-    "passport": "^0.4.1"
+    "passport": "^0.4.1",
+    "qrcode": "^1.4.4"
   },
   "devDependencies": {
     "nodemon": "^2.0.12"
