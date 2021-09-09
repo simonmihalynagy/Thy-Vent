@@ -43,10 +43,14 @@
     </ul>
   </div>
 </nav>
-
-<h1>Welcome, {{user.firstName}} !</h1>
-
-<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+<div class="event-box">
+  <h4>Welcome, {{user.firstName}} !</h4>
+</div>
+<div
+  id="carouselExampleIndicators"
+  class="carousel slide event-box"
+  data-ride="carousel"
+>
   <ol class="carousel-indicators">
     <li
       data-target="#carouselExampleIndicators"
@@ -103,7 +107,6 @@
   </a>
 </div>
 
-<div class="header">
-  <a href="/" class="btn btn-primary">See all events!</a>
+<div class="header event-box">
+  <a href="/public-events/" class="btn btn-primary">See all events!</a>
 </div>
-

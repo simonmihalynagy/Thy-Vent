@@ -1,5 +1,9 @@
-<h1>This is your user account</h1>
-<form action="/users/{{user.id}}/account" class="px-4 py-3" method="post">
+<form
+  action="/users/{{user.id}}/account"
+  class="px-4 py-3 event-box"
+  method="post"
+>
+  <h4 class="event-box">your account:</h4>
   {{!-- <input type="text" name="email" id="email" placeholder="{{user.email}}" />  --}}
   <div class="form-group">
     <label for="firstName">Your first Name: </label>
@@ -22,7 +26,7 @@
     />
   </div>
   <br />
-  <h3>Put in your address, please!</h3>
+  <h4 class="event-box">fill in your address:</h4>
   <br />
   <div class="form-group">
     <label for="addressName">Address name</label>
@@ -90,9 +94,17 @@
       value="{{user.address.country}}"
     />
   </div>
-  <button type="submit">Save Settings</button>
+  <button class="btn btn-primary" type="submit">Save Settings</button>
 </form>
-<a class="btn btn-primary" href="/users/{{user.id}}/delete-account">Delete
-  account</a>
-<br />
-<a class="btn btn-primary" href="/">Go Back</a>
+<div class="event-box">
+
+  <a
+    class="btn btn-primary inline"
+    href="/users/{{user.id}}/delete-account"
+  >Delete account</a>
+
+</div>
+<div class="event-box">
+
+  <a class="btn btn-primary inline" href="/">Go Back</a>
+</div>

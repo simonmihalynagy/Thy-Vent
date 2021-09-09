@@ -1,0 +1,21 @@
+{{#each events}}
+  <div class="event-box">
+    <br />
+    <h4>{{this.title}}</h4>
+    <p>In {{this.address.city}}, {{this.month}} {{this.year}}.</p>
+    <p> {{this.description}}</p>
+    <br />
+    <a href="/users/{{this.id}}/details"><button
+        class="btn btn-primary inline"
+      >Details</button></a>
+    <a href="/users/{{this.id}}/join"><button
+        class="btn btn-primary inline"
+        type="submit"
+      >Join!</button></a>
+
+    <br />
+
+  </div>
+{{/each}}
+
+<a href="/users/{{user}}" class="btn btn-primary">Go back!</a>

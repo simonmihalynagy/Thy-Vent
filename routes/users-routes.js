@@ -72,7 +72,7 @@ router.post("/create-event", (req, res) => {
     emailInvites,
     guests,
   } = req.body;
-  const invitesArr = emailInvites.split(",");
+  const invitesArr = emailInvites.toLowerCase().split(",");
 
   const geoPromise = axios
     .get(
@@ -149,6 +149,12 @@ router.get("/:id/my-events", (req, res) => {
           adminEvents: result[0],
           user: result[1],
           guestEvents: result[2],
+          notAttending:
+            result[2].length === 0 ? "You didnt join any events yet!" : "",
+          notHosting:
+            result[0].length === 0
+              ? "You didnt create any events just yet!"
+              : "",
         });
         //res.send({ events: result[0] });
       }
@@ -235,7 +241,15 @@ router.get("/:eventId/details", (req, res) => {
   const eventId = req.params.eventId;
 
   Event.findById(eventId).then((singleEvent) => {
+    singleEvent.month = singleEvent.startDate.toLocaleString("en-US", {
+      month: "short",
+    });
+    singleEvent.year = singleEvent.startDate.getFullYear();
+    singleEvent.day = singleEvent.startDate.toLocaleString("en-US", {
+      day: "2-digit",
+    });
     res.render("event-details", {
+      userId: req.session.currentUser,
       eventObj: singleEvent,
       longitude: singleEvent.address.longitude,
       latitude: singleEvent.address.latitude,
@@ -244,21 +258,52 @@ router.get("/:eventId/details", (req, res) => {
   });
 });
 
-//**REGISTER ROUTE */
 
+//**REGISTER ROUTE */
+=======
+/// LEAVE AN EVENT YOU ATTEND
+
+router.get("/:eventId/leave", (req, res) => {
+  const eventId = req.params.eventId;
+  const userId = req.session.currentUser;
+  console.log("this is the userId", userId);
+  Event.updateOne(
+    { _id: eventId },
+    { $pull: { guests: { $in: userId } } }
+  ).then((resFromDb) => {
+    console.log(resFromDb);
+    res.redirect(`/users/${userId}/my-events`);
+  });
+});
+
+///  JOIN A PUBLIC EVENT
+
+
+router.get("/:eventId/join", (req, res) => {
+  const userId = req.session.currentUser;
+  const eventId = req.params.eventId;
+  Event.findByIdAndUpdate({ _id: eventId }, { $push: { guests: userId } }).then(
+    (resFromDb) => {
+      res.redirect("/public-events/");
+    }
+  );
+});
+
+/// REGISTER!
 router.post("/register", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
   const salt = bcryptjs.genSaltSync(saltRounds);
   const hashedPassword = bcryptjs.hashSync(password, salt);
-  console.log("================>" + hashedPassword);
-  console.log("================>" + email);
-  User.find().then((res) => {
-    console.log(res);
-  });
   User.create({ email, passwordHash: hashedPassword }).then((resFromDb) => {
-    console.log("================> created a new user!");
-    res.redirect("/");
+    Event.updateMany(
+      {
+        emailInvites: { $in: [resFromDb.email] },
+      },
+      { $push: { guests: resFromDb.id } }
+    ).then((updatedEvents) => {
+      res.redirect("/");
+    });
   });
 });
 

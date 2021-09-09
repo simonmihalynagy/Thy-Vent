@@ -1,35 +1,41 @@
-<h1>Dear {{user.firstName}}, here are your events:</h1>
+<h3>{{user.firstName}}, here are your events:</h3>
 <br />
-<h4>To edit your events, click edit below the event</h4>
-<h2>Events you created:</h2>
-<br />
+<h4>Events you created:</h4>
+
 {{#each adminEvents}}
-  admin:
-  {{this.admin.0.firstName}}
-  <br />
-  title:
-  {{this.title}}
-  <br />
-  {{this.description}}
-  <br />
-  <a href="/users/{{this.id}}/edit"><button
-      class="btn btn-primary"
-      type="submit"
-    >Edit this event</button></a>
-  <br />
-  <br />
-  <a href="/users/{{this.id}}/delete"><button
-      class="btn btn-primary"
-      type="submit"
-    >Delete this event</button></a>
-  <br />
-  <br />
-  <a href="/users/{{this.id}}/details"><button class="btn btn-primary">Show
-      Details</button></a>
-  <br />
-  <br />
-  <hr />
+  <div class="event-box">
+    <br />
+    <h4>{{this.title}}</h4>
+    <p>from: {{this.admin.0.firstName}}</p>
+
+    <p> {{this.description}}</p>
+    <br />
+    <a href="/users/{{this.id}}/edit"><button
+        class="btn btn-primary inline"
+        type="submit"
+      >Edit</button></a>
+
+    <a href="/users/{{this.id}}/delete"><button
+        class="btn btn-primary inline"
+        type="submit"
+      >Delete</button></a>
+
+    <a href="/users/{{this.id}}/details"><button
+        class="btn btn-primary inline"
+      >Details</button></a>
+    <br />
+
+  </div>
+
 {{/each}}
+{{#if notHosting}}
+  <div class="event-box">
+    <p>{{notHosting}}</p>
+  </div>
+{{/if}}
+
+<h4>Events you attend:</h4>
+
 
 {{! copied details button here as well to be able to access details form events that you attend }}
 
@@ -38,7 +44,31 @@
   <h3>title: {{this.title}}</h3>
   <a href="/users/{{this.id}}/details"><button class="btn btn-primary">Show
       Details</button></a>
-  <br />
-{{/each}}
 
+{{#each guestEvents}}
+  <div class="event-box">
+    <br />
+    <h3>{{this.title}}</h3>
+    
+    <br />
+
+    <a href="/users/{{this.id}}/details"><button
+        class="btn btn-primary inline"
+        type="submit"
+      >Details</button></a>
+    <a href="/users/{{this.id}}/leave"><button
+        class="btn btn-primary inline"
+        type="submit"
+      >Leave Event</button></a>
+
+  </div>
+
+{{/each}}
+{{#if notAttending}}
+  <div class="event-box">
+    <p>{{notAttending}}</p>
+  </div>
+{{/if}}
+
+<br /><br />
 <a href="/users/{{user.id}}" class="btn btn-primary">Go back!</a>
