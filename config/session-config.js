@@ -16,8 +16,7 @@ module.exports = (app) => {
       cookie: { maxAge: 6000000 },
       store: MongoStore.create({
         // <== ADDED !!!
-        mongoUrl:
-          process.env.MONGO_DB_URI || "mongodb://localhost/event-project",
+        mongoUrl: process.env.MONGO_DB_URI,
         // ttl => time to live
         // ttl: 10, // 60sec * 60min * 24h => 1 day
       }),
