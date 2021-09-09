@@ -11,6 +11,7 @@ const sgMail = require("@sendgrid/mail");
 const SG_API_KEY = process.env.SGAPIKEY;
 sgMail.setApiKey(SG_API_KEY);
 const axios = require("axios").default;
+const QRcode = require("qrcode");
 
 // axios.<method> will now provide autocomplete and parameter typings
 
@@ -229,7 +230,7 @@ router.get("/:eventId/delete", (req, res) => {
   });
 });
 
-/// SHOW EVENT DETAILS PAGE!
+//**  SHOW EVENT DETAILS PAGE! */
 router.get("/:eventId/details", (req, res) => {
   const eventId = req.params.eventId;
 
@@ -239,10 +240,11 @@ router.get("/:eventId/details", (req, res) => {
       longitude: singleEvent.address.longitude,
       latitude: singleEvent.address.latitude,
     });
+    // res.send(singleEvent);
   });
 });
 
-///
+//**REGISTER ROUTE */
 
 router.post("/register", (req, res) => {
   const email = req.body.email;
@@ -279,7 +281,7 @@ router.post("/login", (req, res) => {
   });
 });
 
-// LANDING PAGE!
+//**  LANDING PAGE! */
 
 router.get("/:id", (req, res) => {
   const userId = req.params.id;
@@ -306,7 +308,7 @@ router.get("/:id", (req, res) => {
   //});
 });
 
-//* GET ACCOUNT
+//* GET ACCOUNT */
 
 router.get("/:id/account", (req, res) => {
   const userId = req.session.currentUser;
@@ -320,7 +322,7 @@ router.get("/:id/account", (req, res) => {
   });
 });
 
-//* UPDATE PROFILE/ACCOUNT
+//* UPDATE PROFILE/ACCOUNT */
 
 router.post("/:id/account", (req, res) => {
   //*what if i dont know what exactly will be updated?
@@ -353,10 +355,51 @@ router.post("/:id/account", (req, res) => {
   });
 });
 
+//**DELETE ACCOUNT ROUTE */
+
 router.get("/:userId/delete-account", (req, res) => {
   const userId = req.params.userId;
   User.findByIdAndDelete(userId).then(() => {
     res.redirect("/signout");
+  });
+});
+
+//**GENERATE QR CODE */
+
+router.get("/qrcode/:eventId", (req, res) => {
+  const guestId = req.session.currentUser;
+
+  const eventId = req.params.eventId;
+
+  QRcode.toDataURL(
+    `http://localhost:3000/users/validate-with-qrcode/${guestId}/${eventId}`
+  )
+    .then((url) => {
+      res.render("qrcode", { url: url });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
+//**READ QR CODE */
+router.get("/validate-with-qrcode/:guestId/:eventId", (req, res) => {
+  const guestId = req.params.guestId;
+  const eventId = req.params.eventId;
+
+  if (!req.session.currentUser) {
+    res.redirect("/");
+  }
+
+  Event.findById(eventId).then((event) => {
+    if (
+      event.admin === req.session.currentUser &&
+      event.guests.includes(guestId)
+    ) {
+      res.render("qrcode-valid");
+    } else {
+      res.render("qrcode-invalid");
+    }
   });
 });
 
