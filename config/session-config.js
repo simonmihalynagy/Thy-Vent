@@ -17,7 +17,7 @@ module.exports = (app) => {
       store: MongoStore.create({
         // <== ADDED !!!
         mongoUrl:
-          process.env.MONGODB_URI || "mongodb://localhost/event-project",
+          process.env.MONGO_DB_URI || "mongodb://localhost/event-project",
         // ttl => time to live
         // ttl: 10, // 60sec * 60min * 24h => 1 day
       }),
