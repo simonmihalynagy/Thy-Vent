@@ -5,6 +5,7 @@ const userSchema = new Schema({
     type: String,
     required: [true, "Password is required!"],
   },
+  imageURL: { type: String, default: "" },
   email: {
     type: String,
     match: [/^\S+@\S+\.\S+$/, "Please use a valid email address."],

@@ -31,3 +31,15 @@ a {
 #valid {
   width: 80vw;
 }
+
+.profile-picture {
+  width: 40px;
+  height: 80px;
+}
+
+.picture-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
