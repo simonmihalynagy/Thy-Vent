@@ -356,27 +356,10 @@ router.get("/:id/account", (req, res) => {
 
 //* UPDATE PROFILE/ACCOUNT */
 
-//**upload profile picture*/
-router.post(
-  "/:userId/uploadProfilePicture",
-  fileUploader.single("profilePhoto"),
-  (req, res) => {
-    const userId = req.params.userId;
-    console.log("this is the user id=>" + userId);
-    const imageUrl = req.file.path;
-    console.log("this is the image url=>" + imageUrl);
 
-    User.findByIdAndUpdate(userId, { imageURL: req.file.path }).then((user) => {
-      console.log(user);
 
-      res.redirect(`/users/${userId}/account`);
-    });
-  }
-);
-
-router.post("/:id/account", (req, res) => {
-  //*what if i dont know what exactly will be updated?
-  //*should i update the model?
+router.post("/:id/account", fileUploader.single("profilePhoto"), (req, res) => {
+ 
   const userId = req.params.id;
   console.log("this is the userID: " + userId);
   const {
@@ -390,6 +373,8 @@ router.post("/:id/account", (req, res) => {
     city,
   } = req.body;
 
+  const imageUrl = req.file.path;
+
   User.findById(userId).then((user) => {
     user.firstName = firstName;
     user.lastName = lastName;
@@ -399,6 +384,7 @@ router.post("/:id/account", (req, res) => {
     user.address.postalCode = postalCode;
     user.address.country = country;
     user.address.city = city;
+    user.imageURL = imageUrl;
     user.save().then(() => {
       res.redirect(`/users/${userId}/account`);
     });
