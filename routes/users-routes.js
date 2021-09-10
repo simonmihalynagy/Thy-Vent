@@ -12,6 +12,7 @@ const SG_API_KEY = process.env.SGAPIKEY;
 sgMail.setApiKey(SG_API_KEY);
 const axios = require("axios").default;
 const QRcode = require("qrcode");
+const fileUploader = require("../config/cloudinary-config");
 
 // axios.<method> will now provide autocomplete and parameter typings
 
@@ -337,18 +338,6 @@ router.get("/:id", (req, res) => {
       firstEvent: resFromPromise[1][0],
     });
   });
-  // User.findById(id).then((userFromDb) => {
-  //   res.render("landing-page", { user: userFromDb });
-  // });
-
-  //-----//
-  //Promise.all([eventPromise, userPromise]).then((result) => {
-  //res.render("landing-page", {
-  //events: result[0],
-  //user: result[1],
-  //});
-  //res.send({ events: result });
-  //});
 });
 
 //* GET ACCOUNT */
@@ -366,6 +355,24 @@ router.get("/:id/account", (req, res) => {
 });
 
 //* UPDATE PROFILE/ACCOUNT */
+
+//**upload profile picture*/
+router.post(
+  "/:userId/uploadProfilePicture",
+  fileUploader.single("profilePhoto"),
+  (req, res) => {
+    const userId = req.params.userId;
+    console.log("this is the user id=>" + userId);
+    const imageUrl = req.file.path;
+    console.log("this is the image url=>" + imageUrl);
+
+    User.findByIdAndUpdate(userId, { imageURL: req.file.path }).then((user) => {
+      console.log(user);
+
+      res.redirect(`/users/${userId}/account`);
+    });
+  }
+);
 
 router.post("/:id/account", (req, res) => {
   //*what if i dont know what exactly will be updated?

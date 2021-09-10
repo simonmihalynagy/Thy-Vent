@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-  <a class="navbar-brand" href="#">Event Thingy</a>
+  <a class="navbar-brand" href="#">Thy-vent</a>
   <button
     class="navbar-toggler"
     type="button"
@@ -67,7 +67,8 @@
       <div class="carousel-caption d-none d-md-block">
         <h1>{{firstEvent.title}}</h1>
         <h4>{{firstEvent.description}}</h4>
-        <a href="" class="btn btn-primary">more information!</a>
+        <a href="/users/{{firstEvent.id}}/details" class="btn btn-primary">more
+          information!</a>
       </div>
     </div>
 
@@ -81,7 +82,8 @@
         <div class="carousel-caption d-none d-md-block">
           <h1>{{this.title}}</h1>
           <h4>{{this.description}}</h4>
-          <a href="/" class="btn btn-primary">more information!</a>
+          <a href="/users/{{this.id}}/details" class="btn btn-primary">more
+            information!</a>
         </div>
       </div>
 
