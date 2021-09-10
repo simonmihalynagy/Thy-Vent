@@ -411,7 +411,7 @@ router.get("/qrcode/:eventId", (req, res) => {
   const eventId = req.params.eventId;
 
   QRcode.toDataURL(
-    `http://192.168.178.72:3000/users/validate-with-qrcode/${guestId}/${eventId}`
+    `http://thy-vent.herokuapp.com/users/validate-with-qrcode/${guestId}/${eventId}`
   )
     .then((url) => {
       res.render("qrcode", { url: url });
