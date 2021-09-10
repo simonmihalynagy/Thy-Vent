@@ -356,10 +356,7 @@ router.get("/:id/account", (req, res) => {
 
 //* UPDATE PROFILE/ACCOUNT */
 
-
-
 router.post("/:id/account", fileUploader.single("profilePhoto"), (req, res) => {
- 
   const userId = req.params.id;
   console.log("this is the userID: " + userId);
   const {
@@ -373,7 +370,12 @@ router.post("/:id/account", fileUploader.single("profilePhoto"), (req, res) => {
     city,
   } = req.body;
 
-  const imageUrl = req.file.path;
+  let imageUrl;
+  if (req.file) {
+    imageUrl = req.file.path;
+  } else {
+    imageUrl = req.body.existingImage;
+  }
 
   User.findById(userId).then((user) => {
     user.firstName = firstName;
@@ -384,6 +386,7 @@ router.post("/:id/account", fileUploader.single("profilePhoto"), (req, res) => {
     user.address.postalCode = postalCode;
     user.address.country = country;
     user.address.city = city;
+
     user.imageURL = imageUrl;
     user.save().then(() => {
       res.redirect(`/users/${userId}/account`);
