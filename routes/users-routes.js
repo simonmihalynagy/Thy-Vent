@@ -432,12 +432,12 @@ router.get("/validate-with-qrcode/:guestId/:eventId", (req, res) => {
 
   Event.findById(eventId).then((event) => {
     if (
-      //  ONLY REMOVED FOR TESTING PURPOSES // event.admin === req.session.currentUser &&
+      event.admin === req.session.currentUser &&
       event.guests.includes(guestId)
     ) {
       res.render("qrcode-valid");
     } else {
-      res.render("qrcode-invalid");
+      res.send("Please log-in as admin of the event!");
     }
   });
 });
