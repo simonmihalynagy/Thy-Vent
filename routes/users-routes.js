@@ -22,7 +22,7 @@ const createInviteMessage = (title, creator, addressArr) => {
     subject: `You are invited to join ${creator}'s event: ${title}!`,
     text: "Follow the link to join the following event: <link>",
     html: `<h1>${creator} invited to you to join an event</h1> <br/> <p>click on the following link to join the event!</p> <br/> <br/> 
-    <a target="_blank" href="http://localhost:3000/" >JOIN THE EVENT!</a>`,
+    <a target="_blank" href="http://thy-vent.herokuapp.com/register" >JOIN THE EVENT!</a>`,
   };
   inviteMessage.to = addressArr;
   return inviteMessage;
@@ -431,6 +431,8 @@ router.get("/validate-with-qrcode/:guestId/:eventId", (req, res) => {
   }
 
   Event.findById(eventId).then((event) => {
+    console.log("this is the current user:", req.session.currentUser);
+    console.log("admin is ", event.admin);
     if (
       event.admin === req.session.currentUser &&
       event.guests.includes(guestId)
