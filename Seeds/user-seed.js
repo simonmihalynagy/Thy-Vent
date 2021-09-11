@@ -5,7 +5,7 @@ const bcryptjs = require("bcryptjs");
 
 const DB_NAME = "event-project";
 
-mongoose.connect(`mongodb://localhost/${DB_NAME}`, {
+mongoose.connect(process.env.MONGO_DB_URI, {
   useCreateIndex: true,
   useNewUrlParser: true,
   useUnifiedTopology: true,
