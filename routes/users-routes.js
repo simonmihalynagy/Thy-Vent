@@ -431,10 +431,8 @@ router.get("/validate-with-qrcode/:guestId/:eventId", (req, res) => {
   }
 
   Event.findById(eventId).then((event) => {
-    console.log("this is the current user:", req.session.currentUser);
-    console.log("admin is ", event.admin);
     if (
-      event.admin === req.session.currentUser &&
+      //event.admin === req.session.currentUser &&
       event.guests.includes(guestId)
     ) {
       res.render("qrcode-valid");
